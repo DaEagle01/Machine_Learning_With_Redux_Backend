@@ -26,8 +26,17 @@ async function run() {
     app.get("/solutions", async (req, res) => {
       const result = await solutionCollecton.find({}).toArray();
       res.json(result);
-      console.log(result);
     });
+
+    // get specific soluiton using id query
+    app.get("/solutions/:_id", async (req, res) => {
+      const id = req.params._id;
+      const query = { _id: ObjectId(id) };
+      const result = await solutionCollecton.findOne(query);
+      res.json(result); 
+    });
+
+    
   } finally {
     // await client.close();
   }
