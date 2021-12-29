@@ -26,6 +26,7 @@ async function run() {
     app.get("/solutions", async (req, res) => {
       const result = await solutionCollecton.find({}).toArray();
       res.json(result);
+      res.send(result);
     });
 
     // get specific soluiton using id query
@@ -33,10 +34,8 @@ async function run() {
       const id = req.params._id;
       const query = { _id: ObjectId(id) };
       const result = await solutionCollecton.findOne(query);
-      res.json(result); 
+      res.json(result);
     });
-
-    
   } finally {
     // await client.close();
   }
