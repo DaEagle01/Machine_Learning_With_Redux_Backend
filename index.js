@@ -19,8 +19,8 @@ async function run() {
   try {
     await client.connect();
     const database = client.db("machineLearning");
-    const learnings = database.collection("learnings");
     const solutionCollecton = database.collection("solutions");
+    const orderCollection = database.collection("orders");
 
     // get all the soloutions
     app.get("/solutions", async (req, res) => {
@@ -35,6 +35,22 @@ async function run() {
       const query = { _id: ObjectId(id) };
       const result = await solutionCollecton.findOne(query);
       res.json(result);
+    });
+
+    // purchase a plan
+    app.post("/orders", async (req, res) => {
+      const order = req.body;
+      const result = await orderCollection.insertOne(order);
+      res.json(result);
+      res.send(result);
+      console.log(result);
+    });
+
+    // get submitted orders data
+    app.get("/orders", async (req, res) => {
+      const result = await orderCollection.find({}).toArray();
+      res.json(result);
+      res.send(result);
     });
   } finally {
     // await client.close();
